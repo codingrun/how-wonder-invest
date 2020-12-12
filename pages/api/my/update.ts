@@ -2,7 +2,6 @@ import { NextApiHandler } from "next";
 import { query } from "../../../lib/db";
 
 const handler: NextApiHandler = async (req, res) => {
-  console.log("req.body = ", req.body);
   const { id, appealText, content } = req.body;
   try {
     if (!id || !appealText || !content) {
