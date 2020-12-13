@@ -3,13 +3,8 @@ import axios from "axios";
 import dayjs from "dayjs";
 
 const handler: NextApiHandler = async (req, res) => {
-  const { id = "", account } = req.query;
-  const userId = id.toString();
+  const { account } = req.query;
   try {
-    if (!userId) {
-      return res.status(400).json({ message: "`id` required" });
-    }
-
     const IsTuno = dayjs().valueOf();
     const today = dayjs().format("YYYYMMDD");
 
