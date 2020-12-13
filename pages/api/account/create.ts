@@ -56,12 +56,38 @@ const handler: NextApiHandler = async (req, res) => {
       return res.status(400).json({ message: "registerNumber is empty" });
     }
 
+    const AcnoIsTuno = dayjs().valueOf();
+    const directAcnoData = {
+      Header: {
+        ApiNm: "CheckOpenFinAccountDirect",
+        Tsymd: today,
+        Trtm: "141720",
+        Iscd: "000734",
+        FintechApsno: "001",
+        ApiSvcCd: "DrawingTransferA",
+        IsTuno: AcnoIsTuno,
+        AccessToken: process.env.NH_ACCESSTOKEN,
+      },
+      Rgno: RegisterNumber,
+      BrdtBrno: birth,
+    };
+
+    const AcnoResult = await axios.post(
+      "https://developers.nonghyup.com/CheckOpenFinAccountDirect.nh",
+      directAcnoData
+    );
+
+    const FinAcno = AcnoResult.data.FinAcno || "";
+    if (!FinAcno || FinAcno.length === 0) {
+      return res.status(400).json({ message: "FinAcno is empty" });
+    }
+
     const createAccount = await query(
       `
         INSERT INTO account (users_id, registerNo, bank, account)
         VALUES (?, ?,'011', ?)
         `,
-      [user_id, RegisterNumber, accountNumber]
+      [user_id, FinAcno, accountNumber]
     );
 
     const resultMessage =
