@@ -23,7 +23,7 @@ const handler: NextApiHandler = async (req, res) => {
     const resultMessage = results && results.length > 0 ? "success!" : "fail";
     // @ts-ignore
     const resultStatus = results && results.length > 0 ? 200 : 404;
-    return res.status(resultStatus).json({ resultMessage });
+    return res.status(resultStatus).json({ message: resultMessage });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

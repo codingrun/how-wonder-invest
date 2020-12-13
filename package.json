@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@types/bad-words": "^3.0.0",
+    "axios": "^0.21.0",
     "bad-words": "^3.0.4",
     "clsx": "^1.1.1",
+    "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
     "next": "latest",
     "react": "^17.0.1",
