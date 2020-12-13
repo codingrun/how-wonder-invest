@@ -1,0 +1,50 @@
+import { NextApiHandler } from "next";
+import axios from "axios";
+import dayjs from "dayjs";
+
+const handler: NextApiHandler = async (req, res) => {
+  const { id = "", account } = req.query;
+  const userId = id.toString();
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: "`id` required" });
+    }
+
+    const IsTuno = dayjs().valueOf();
+    const today = dayjs().format("YYYYMMDD");
+
+    const accountNumberData = {
+      Header: {
+        ApiNm: "InquireTransactionHistory",
+        Tsymd: today,
+        Trtm: "141720",
+        Iscd: "000734",
+        FintechApsno: "001",
+        ApiSvcCd: "ReceivedTransferA",
+        IsTuno,
+        AccessToken: process.env.NH_ACCESSTOKEN,
+      },
+      Bncd: "011",
+      Acno: account,
+      Insymd: dayjs().subtract(1, "month").format("YYYYMMDD"),
+      Ineymd: today,
+      TrnsDsnc: "A",
+      Lnsq: "DESC",
+      PageNo: "1",
+      Dmcnt: "100",
+    };
+
+    console.log("accountNumberData = ", accountNumberData);
+
+    const historyResult = await axios.post(
+      "https://developers.nonghyup.com/InquireTransactionHistory.nh",
+      accountNumberData
+    );
+
+    return res.json(historyResult);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
+
+export default handler;
