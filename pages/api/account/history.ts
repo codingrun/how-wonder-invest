@@ -34,8 +34,6 @@ const handler: NextApiHandler = async (req, res) => {
       Dmcnt: "100",
     };
 
-    console.log("accountNumberData = ", accountNumberData);
-
     const historyResult = await axios.post(
       "https://developers.nonghyup.com/InquireTransactionHistory.nh",
       accountNumberData
