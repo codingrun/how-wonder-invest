@@ -41,7 +41,7 @@ const handler: NextApiHandler = async (req, res) => {
       accountNumberData
     );
 
-    return res.json(historyResult);
+    return res.json({ history: historyResult.data.REC || [] });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
